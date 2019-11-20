@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset=utf-8>
+		<title>Homework 2</title>
+		<style>
+			html {height:100%;}
+			body { margin: 0; height:100%;}
+			canvas {width:80%; height:100%; margin:0;}
+			div {
+				width:20%;
+				height:100%;
+				float:right;
+				background: grey;
+				margin:0;
+			}
+			p {text-align:center;}
+			button {
+				width:16%;
+				background-color:white;
+				color:black;
+				border:0;
+				border-radius:3px;
+			}
+		</style>
+	</head>
+	<body>
+        <script src="three.min.js"></script>
+		<script src="main.js"></script>
+		<div id='buttonPad'>
+			<p>
+				沿轴平移
+				<br>
+				<button onclick='onTranslateYInc()'>上</button>
+				<br>
+				<button onclick='onTranslateXDec()'>左</button>
+				<button onclick='onTranslateXInc()'>右</button>
+				<br>
+				<button onclick='onTranslateYDec()'>下</button>	
+			</p>
+			<p>
+				旋转
+				<br>
+				<button onclick='onAnticlockwiseRotation()'>逆时针</button>
+				<button onclick='onClockwiseRotation()'>顺时针</button>
+			</p>
+			<p>
+				沿x轴缩放
+				<br>
+				<button onclick='onScaleXDec()'>-</button>
+				<button onclick='onScaleXInc()'>+</button>
+				<br>
+				沿y轴缩放
+				<br>
+				<button onclick='onScaleYDec()'>-</button>
+				<button onclick='onScaleYInc()'>+</button>
+			</p>
+			<p>
+				沿x轴错切
+				<br>
+				<button onclick='onShearXDec()'>-</button>
+				<button onclick='onShearXInc()'>+</button>
+				<br>
+				沿y轴错切
+				<br>
+				<button onclick='onShearYDec()'>-</button>
+				<button onclick='onShearYInc()'>+</button>
+			</p>
+			<p>
+				关于轴对称
+				<br>
+				<button onclick='onReflectX()'>x轴</button>
+				<button onclick='onReflectY()'>y轴</button>
+			</p>
+		</div>
+	</body>
+</html>

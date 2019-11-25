@@ -6,7 +6,8 @@ var window_resize = false;
 var canvas;
 var loader = new THREE.OBJLoader();
 const SQUAREROOT3 = Math.sqrt(3);
-
+var scale_x = 100;
+var scale_y = 100;
 //global values
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, graphWidth/graphHeight, 0.1, 1000);
@@ -27,7 +28,7 @@ canvas = document.getElementsByTagName('canvas');
 //set position of camera
 camera.position.x = 0;
 camera.position.y = 0;
-camera.position.z = 40;
+camera.position.z = 50;
 
 //return a created object, and you can perform operations on it
 function createMyModel(){
@@ -74,9 +75,20 @@ document.onkeypress = function(event){
     }else if ('D' == code){
         lookRightBy(2);
     }else if ('J' == code){
-        scaleModel(-0.1);
+        if (!isPerspective){
+            scaleModel(-200);
+        }
+        else{
+            scaleModel(-0.5);
+        }
+
     }else if ('L' == code){
-        scaleModel(0.1);
+        if (!isPerspective){
+            scaleModel(200);
+        }
+        else{
+            scaleModel(0.5);
+        }
     }else if ('P' == code){
         switchProjection();
     }
@@ -92,6 +104,10 @@ function scaleModel(scaleDelta){
     model.scale.y += scaleDelta;
     if (model.scale.y<=0){
         model.scale.y = Math.pow(10, -5);
+    }
+    model.scale.z += scaleDelta;
+    if (model.scale.z<=0){
+        model.scale.z = Math.pow(10, -5);
     }
 }
 
@@ -118,8 +134,10 @@ function lookRightBy(delta){ //degree to radian
 }
 
 function switchProjection(){
+
     isPerspective = !isPerspective;
     var cameraPosition = camera.position.clone();
+
     scene.remove(camera);
     if (isPerspective){
         camera = new THREE.PerspectiveCamera(75, graphWidth/graphHeight, 0.1, 1000);
@@ -140,6 +158,8 @@ var render = function(){
         let min_len = Math.min(innerHeight, innerWidth);
         canvas.width = 0.7 * min_len;
         canvas.height = 0.7 * min_len;
+        graphWidth = canvas.width;
+        graphHeight = canvas.height;
         renderer.setSize(canvas.width, canvas.height);
         window_resize = false;
     }

@@ -1,5 +1,6 @@
-var graphWidth = window.innerWidth;
-var graphHeight = window.innerHeight;
+
+var graphWidth = 800;
+var graphHeight = 800;
 const SQUAREROOT3 = Math.sqrt(3);
 
 //global values

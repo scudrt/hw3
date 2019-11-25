@@ -11,7 +11,6 @@ var isPerspective = true;
 
 var model = createMyModel();
 
-//set renderer
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(graphWidth, graphHeight);
 document.body.appendChild(renderer.domElement);
@@ -63,12 +62,16 @@ function scaleModel(scaleDelta){
 function changeViewport(VPMatrix){
 }
 
-function lookUpBy(delta){ //radian
-    camera.lookat();
+function lookUpBy(delta){ //degree to radian
+    delta = delta / 180 * Math.PI;
+    var cos = Math.cos(delta),
+        sin = Math.sin(delta);
 }
 
-function lookLeftBy(delta){ //radian
-    camera.lookat();
+function lookLeftBy(delta){ //degree to radian
+    delta = delta / 180 * Math.PI;
+    var cos = Math.cos(delta),
+        sin = Math.sin(delta);
 }
 
 function switchProjection(){

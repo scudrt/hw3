@@ -11,12 +11,15 @@ const SQUAREROOT3 = Math.sqrt(3);
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, graphWidth/graphHeight, 0.1, 1000);
 scene.add(camera);
+var light;
+scene.add(light);
 
 var isPerspective = true;
 
 var model = createMyModel();
 
 var renderer = new THREE.WebGLRenderer();
+renderer.setClearColor(0xffffff,1.0);
 renderer.setSize(graphWidth, graphHeight);
 document.body.appendChild(renderer.domElement);
 canvas = document.getElementsByTagName('canvas');
@@ -28,11 +31,32 @@ camera.position.z = 40;
 
 //return a created object, and you can perform operations on it
 function createMyModel(){
-    var model = new THREE.Mesh(
-        new THREE.TorusKnotGeometry( 10, 3, 100, 16 ),
-        new THREE.MeshBasicMaterial( { color: 0xaa00ff } )
-    );
-    scene.add(model);
+    loader.load( "pinecone.obj", function ( loadedMesh ) {
+        var material = new THREE.MeshLambertMaterial({color: 0x5C3A21});
+
+        // 加载完obj文件是一个场景组，遍历它的子元素，赋值纹理并且更新面和点的发现了
+        loadedMesh.children.forEach(function (child) {
+            //给每个子元素赋值纹理
+            child.material = material;
+            //更新每个子元素的面和顶点的法向量
+            child.geometry.computeFaceNormals();
+            child.geometry.computeVertexNormals();
+        });
+
+        //模型放大一百倍
+        loadedMesh.scale.set(100, 100, 100);
+
+        //添加到场景当中
+        scene.add(loadedMesh);
+        model = loadedMesh;
+
+
+    } );
+    // var model = new THREE.Mesh(
+    //     new THREE.TorusKnotGeometry( 10, 3, 100, 16 ),
+    //     new THREE.MeshBasicMaterial( { color: 0xaa00ff } )
+    // );
+    // scene.add(model);
     return model;
 }
 
@@ -124,3 +148,18 @@ window.onresize=function(){
 
     window_resize = true;
 }
+
+
+function initLight() {
+    scene.add(new THREE.AmbientLight(0x444444));
+
+    light = new THREE.PointLight(0xffffff);
+    light.position.set(0,0,100);
+
+    //告诉平行光需要开启阴影投射
+    light.castShadow = true;
+
+    scene.add(light);
+}
+
+initLight();

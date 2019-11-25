@@ -1,12 +1,17 @@
+var innerHeight = window.innerHeight;
+var innerWidth = window.innerWidth;
+var graphWidth = 0.6 * innerHeight;
+var graphHeight = 0.6 * innerHeight;
+var window_resize = false;
+var canvas;
 
-var graphWidth = 800;
-var graphHeight = 800;
 const SQUAREROOT3 = Math.sqrt(3);
 
 //global values
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera(75, graphWidth/graphHeight, 0.1, 1000);
 scene.add(camera);
+
 var isPerspective = true;
 
 var model = createMyModel();
@@ -14,6 +19,7 @@ var model = createMyModel();
 var renderer = new THREE.WebGLRenderer();
 renderer.setSize(graphWidth, graphHeight);
 document.body.appendChild(renderer.domElement);
+canvas = document.getElementsByTagName('canvas');
 
 //set position of camera
 camera.position.x = 0;
@@ -97,6 +103,20 @@ var render = function(){
     model.rotation.x += 0.01;
     model.rotation.y += 0.01;
     model.rotation.z += 0.01;
+    if (window_resize){
+        let min_len = Math.min(innerHeight, innerWidth);
+        canvas.width = 0.6 * min_len;
+        canvas.height = 0.6 * min_len;
+        renderer.setSize(canvas.width, canvas.height);
+        window_resize = false;
+    }
     renderer.render(scene, camera);
 }
 render();
+
+window.onresize=function(){
+    innerHeight = document.documentElement.clientHeight;
+    innerWidth = document.documentElement.clientWidth;
+
+    window_resize = true;
+}

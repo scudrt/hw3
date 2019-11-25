@@ -26,7 +26,6 @@ function createMyModel(){
         new THREE.TorusKnotGeometry( 10, 3, 100, 16 ),
         new THREE.MeshBasicMaterial( { color: 0xaa00ff } )
     );
-    model.matrixAutoUpdate = false;
     scene.add(model);
     return model;
 }
@@ -37,17 +36,17 @@ document.onkeypress = function(event){
         event.keyCode
     ).toUpperCase();
     if ('W' == code){
-        ;
+        lookUpBy(1);
     }else if ('S' == code){
-        ;
+        lookUpBy(-1);
     }else if ('A' == code){
-        ;
+        lookLeftBy(1);
     }else if ('D' == code){
-        ;
+        lookLeftBy(-1);
     }else if ('J' == code){
-        scaleModel(0.95);
+        scaleModel(-0.02);
     }else if ('L' == code){
-        scaleModel(1.05);
+        scaleModel(0.02);
     }else if ('P' == code){
         switchProjection();
     }
@@ -56,14 +55,8 @@ document.onkeypress = function(event){
 var eye = new THREE.Matrix4();
 eye.identity();
 function scaleModel(scaleDelta){
-    var scaleMatrix = new THREE.Matrix4();
-    scaleMatrix.set(
-        scaleDelta, 0, 0, 0,
-        0, scaleDelta, 0, 0,
-        0, 0, scaleDelta, 0,
-        0, 0, 0, 1
-    );
-    eye.premultiply(scaleMatrix);
+    model.scale.x += scaleDelta;
+    model.scale.y += scaleDelta;
 }
 
 function changeViewport(VPMatrix){
@@ -97,7 +90,9 @@ function switchProjection(){
 //render function
 var render = function(){
     requestAnimationFrame(render);
-    model.matrix.copy(eye);
+    model.rotation.x += 0.01;
+    model.rotation.y += 0.01;
+    model.rotation.z += 0.01;
     renderer.render(scene, camera);
 }
 render();

@@ -42,13 +42,13 @@ document.onkeypress = function(event){
         event.keyCode
     ).toUpperCase();
     if ('W' == code){
-        lookUpBy(1);
+        lookUpBy(2);
     }else if ('S' == code){
-        lookUpBy(-1);
+        lookUpBy(-2);
     }else if ('A' == code){
-        lookLeftBy(1);
+        lookRightBy(-2);
     }else if ('D' == code){
-        lookLeftBy(-1);
+        lookRightBy(2);
     }else if ('J' == code){
         scaleModel(-0.02);
     }else if ('L' == code){
@@ -65,19 +65,26 @@ function scaleModel(scaleDelta){
     model.scale.y += scaleDelta;
 }
 
-function changeViewport(VPMatrix){
-}
-
 function lookUpBy(delta){ //degree to radian
-    delta = delta / 180 * Math.PI;
+    delta = delta * Math.PI / 180.0;
     var cos = Math.cos(delta),
         sin = Math.sin(delta);
+    var y = camera.position.y,
+        z = camera.position.z;
+    camera.position.y = y * cos + z * sin;
+    camera.position.z = z * cos - y * sin;
+    camera.lookAt(model.position);
 }
 
-function lookLeftBy(delta){ //degree to radian
-    delta = delta / 180 * Math.PI;
+function lookRightBy(delta){ //degree to radian
+    delta = delta * Math.PI / 180.0;
     var cos = Math.cos(delta),
         sin = Math.sin(delta);
+    var x = camera.position.x,
+        z = camera.position.z;
+    camera.position.x = x * cos - z * sin;
+    camera.position.z = z * cos + x * sin;
+    camera.lookAt(model.position);
 }
 
 function switchProjection(){
@@ -93,16 +100,12 @@ function switchProjection(){
             0.1, 1000
         );
     }
-    console.log(cameraPosition);
     camera.position.copy(cameraPosition);
 }
 
 //render function
 var render = function(){
     requestAnimationFrame(render);
-    model.rotation.x += 0.01;
-    model.rotation.y += 0.01;
-    model.rotation.z += 0.01;
     if (window_resize){
         let min_len = Math.min(innerHeight, innerWidth);
         canvas.width = 0.6 * min_len;

@@ -69,8 +69,12 @@ function scaleModel(scaleDelta){
 function changeViewport(VPMatrix){
 }
 
-function lookat(){
-    // change camera
+function lookUpBy(delta){ //radian
+    camera.lookat();
+}
+
+function lookLeftBy(delta){ //radian
+    camera.lookat();
 }
 
 function switchProjection(){

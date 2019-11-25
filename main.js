@@ -136,10 +136,6 @@ function switchProjection(){
 //render function
 var render = function(){
     requestAnimationFrame(render);
-<<<<<<< HEAD
-=======
-
->>>>>>> b243e51795fb88b9f2105fd51f09a044ac2a065e
     if (window_resize){
         let min_len = Math.min(innerHeight, innerWidth);
         canvas.width = 0.7 * min_len;
